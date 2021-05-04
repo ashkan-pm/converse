@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
@@ -7,13 +8,36 @@
 
 <VBox fx:id="chatBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tech.aspm.converse.controllers.ChatController">
    <children>
-      <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="500.0">
+      <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="580.0">
          <children>
-            <Label fx:id="channelLbl" layoutX="14.0" layoutY="17.0" />
-            <TextField fx:id="messageTxt" layoutX="12.0" layoutY="360.0" prefHeight="26.0" prefWidth="386.0" />
-            <TextArea fx:id="chatTxt" disable="true" editable="false" layoutX="12.0" layoutY="48.0" prefHeight="300.0" prefWidth="476.0" />
-            <Button fx:id="sendBtn" layoutX="404.0" layoutY="360.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="82.0" text="Send" />
-            <Button fx:id="leaveBtn" layoutX="421.0" layoutY="12.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="66.0" text="Leave" />
+            <TextField fx:id="messageTxt" layoutX="12.0" layoutY="360.0" prefHeight="26.0" prefWidth="466.0" />
+            <TextArea fx:id="chatTxt" disable="true" editable="false" layoutX="12.0" layoutY="48.0" prefHeight="300.0" prefWidth="556.0" />
+            <Button fx:id="sendBtn" layoutX="484.0" layoutY="360.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="82.0" text="Send" />
+            <Button fx:id="leaveBtn" layoutX="501.0" layoutY="12.0" mnemonicParsing="false" onMouseClicked="#handleLeave" prefHeight="25.0" prefWidth="66.0" text="Leave" />
+            <ImageView fx:id="userImg" fitHeight="150.0" fitWidth="12.0" layoutX="12.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../icons/user.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="userLbl" layoutX="32.0" layoutY="17.0" />
+            <ImageView fx:id="channelImg" fitHeight="150.0" fitWidth="16.0" layoutX="180.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../icons/channel.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="channelLbl" layoutX="204.0" layoutY="17.0" />
+            <ImageView fx:id="unlockImg" fitHeight="150.0" fitWidth="16.0" layoutX="364.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../icons/unlock.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="unlockLbl" layoutX="388.0" layoutY="17.0" text="Insecure" textFill="#d13333" />
+            <ImageView fx:id="lockImg" fitHeight="150.0" fitWidth="16.0" layoutX="364.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true" visible="false">
+               <image>
+                  <Image url="@../icons/lock.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="lockLbl" layoutX="388.0" layoutY="17.0" text="Secure" textFill="#3cd33c" visible="false" />
          </children>
       </Pane>
    </children>
