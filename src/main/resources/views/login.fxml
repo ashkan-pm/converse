@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox fx:id="loginBox" alignment="CENTER" fillWidth="false" prefHeight="340.0" prefWidth="340.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tech.aspm.converse.controllers.LoginController">
+   <children>
+      <Pane prefHeight="340.0" prefWidth="340.0" style="-fx-background-color: #ffffff;">
+         <children>
+            <Label layoutX="12.0" layoutY="268.0" text="Channel" />
+            <CheckBox fx:id="encChk" layoutX="12.0" layoutY="305.0" mnemonicParsing="false" text="Encrypted" />
+            <TextField fx:id="usernameTxt" layoutX="148.0" layoutY="224.0" prefHeight="26.0" prefWidth="180.0" />
+            <Label layoutX="12.0" layoutY="230.0" text="Username" />
+            <TextField fx:id="channelTxt" layoutX="148.0" layoutY="262.0" prefHeight="26.0" prefWidth="180.0" />
+            <Button fx:id="loginBtn" layoutX="216.0" layoutY="300.0" mnemonicParsing="false" onMouseClicked="#handleLogin" prefHeight="28.0" prefWidth="110.0" text="Login" />
+            <ImageView fitHeight="176.0" fitWidth="200.0" layoutX="82.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../icon.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+   </children>
+</VBox>
