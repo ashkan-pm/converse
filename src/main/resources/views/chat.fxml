@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.text.*?>
@@ -10,10 +11,13 @@
    <children>
       <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="580.0">
          <children>
-            <TextField fx:id="messageTxt" layoutX="12.0" layoutY="360.0" prefHeight="26.0" prefWidth="466.0" />
-            <TextArea fx:id="chatTxt" disable="true" editable="false" layoutX="12.0" layoutY="48.0" prefHeight="300.0" prefWidth="556.0" />
-            <Button fx:id="sendBtn" layoutX="484.0" layoutY="360.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="82.0" text="Send" />
-            <Button fx:id="leaveBtn" layoutX="501.0" layoutY="12.0" mnemonicParsing="false" onMouseClicked="#handleLeave" prefHeight="25.0" prefWidth="66.0" text="Leave" />
+            <TextField fx:id="messageTxt" layoutX="12.0" layoutY="360.0" onKeyPressed="#handleEnter" prefHeight="26.0" prefWidth="466.0" />
+            <TextArea fx:id="chatTxt" editable="false" layoutX="12.0" layoutY="48.0" prefHeight="300.0" prefWidth="556.0" style="-fx-text-fill: #000000;">
+               <cursor>
+                  <Cursor fx:constant="NONE" />
+               </cursor></TextArea>
+            <Button fx:id="sendBtn" layoutX="484.0" layoutY="360.0" mnemonicParsing="false" onAction="#handleSend" prefHeight="26.0" prefWidth="82.0" text="Send" />
+            <Button fx:id="leaveBtn" layoutX="501.0" layoutY="12.0" mnemonicParsing="false" onAction="#handleLeave" prefHeight="25.0" prefWidth="66.0" text="Leave" />
             <ImageView fx:id="userImg" fitHeight="150.0" fitWidth="12.0" layoutX="12.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../icons/user.png" />

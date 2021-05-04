@@ -1,9 +1,10 @@
 package tech.aspm.converse.controllers;
 
+import org.springframework.amqp.core.Queue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javafx.event.Event;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
@@ -38,10 +39,12 @@ public class LoginController {
     this.fxWeaver = fxWeaver;
   }
 
-  public void handleLogin(Event event) {
+  public void handleLogin(ActionEvent event) {
     userService.setUsername(usernameTxt.getText());
+    Queue queue = userService.createQueue();
     channelService.setName(channelTxt.getText());
     channelService.setSecure(encChk.isSelected());
+    channelService.createBinding(queue);
     fxWeaver.loadController(ChatController.class).show();
   }
 }
