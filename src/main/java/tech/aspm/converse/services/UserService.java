@@ -4,7 +4,8 @@ import java.util.Properties;
 
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
+import org.springframework.amqp.rabbit.listener.AbstractMessageListenerContainer;
+import org.springframework.amqp.rabbit.listener.RabbitListenerEndpointRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +14,7 @@ public class UserService {
   @Autowired
   private AmqpAdmin rabbitMQAdmin;
   @Autowired
-  SimpleMessageListenerContainer container;
+  private RabbitListenerEndpointRegistry listenerEndpointRegistry;
   private String username;
   private Queue queue;
 
@@ -44,11 +45,11 @@ public class UserService {
     }
 
     this.queue = queue;
-    container.addQueues(queue);
+    ((AbstractMessageListenerContainer) this.listenerEndpointRegistry.getListenerContainer("message")).addQueues(queue);
   }
 
   public void cleanup() {
-    container.destroy();
+    ((AbstractMessageListenerContainer) this.listenerEndpointRegistry.getListenerContainer("message")).removeQueues(queue);
     rabbitMQAdmin.deleteQueue(username);
   }
 }

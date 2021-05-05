@@ -5,11 +5,13 @@ import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import net.rgielen.fxweaver.core.FxWeaver;
 import tech.aspm.converse.controllers.ChatController;
+import tech.aspm.converse.models.Message;
 
 @Service
 public class ChannelService {
@@ -45,11 +47,12 @@ public class ChannelService {
   public ChannelService(FxWeaver fxWeaver) {
   }
 
-  public void receiveMessage(String message) {
+  @RabbitListener(id = "message")
+  public void receiveMessage(Message message) {
     chatController.pushMessage(message);
   }
 
-  public void sendMessage(String message) {
+  public void sendMessage(Message message) {
     rabbitMQService.send(name, message);
   }
 

@@ -22,6 +22,23 @@
 		</dependency>
 
 		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.amqp</groupId>
+			<artifactId>spring-rabbit</artifactId>
+			<version>2.3.6</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.amqp</groupId>
+			<artifactId>spring-amqp</artifactId>
+			<version>2.3.6</version>
+		</dependency>
+
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>

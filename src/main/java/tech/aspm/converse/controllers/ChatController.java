@@ -1,5 +1,8 @@
 package tech.aspm.converse.controllers;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +20,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
+import tech.aspm.converse.models.Message;
 import tech.aspm.converse.services.ChannelService;
 import tech.aspm.converse.services.UserService;
 
@@ -81,22 +85,37 @@ public class ChatController {
   }
 
   public void handleSend(ActionEvent event) {
-    channelService.sendMessage(messageTxt.getText());
+    Message message = new Message();
+    message.setUsername(userService.getUsername());
+    message.setBody(messageTxt.getText());
+    message.setChannel(channelService.getName());
+    message.setCreatedAt(new Date());
+    message.setIsEncrypted(channelService.getSecure());
+    channelService.sendMessage(message);
     messageTxt.setText("");
   }
 
   public void handleEnter(KeyEvent event) {
     if (event.getCode().equals(KeyCode.ENTER)) {
-      channelService.sendMessage(messageTxt.getText());
+      Message message = new Message();
+      message.setUsername(userService.getUsername());
+      message.setBody(messageTxt.getText());
+      message.setChannel(channelService.getName());
+      message.setCreatedAt(new Date());
+      message.setIsEncrypted(channelService.getSecure());
+      channelService.sendMessage(message);
       messageTxt.setText("");
     }
   }
 
-  public void pushMessage(String message) {
+  public void pushMessage(Message message) {
+    SimpleDateFormat format = new SimpleDateFormat("hh:mm:ss");
+    String date = format.format(message.getCreatedAt());
+
     if (chatTxt.getText().trim().equals("")) {
-      chatTxt.setText(chatTxt.getText() + message);
+      chatTxt.setText(chatTxt.getText() + "(" + date + ") " + message.getUsername() + ": " + message.getBody());
     } else {
-      chatTxt.setText(chatTxt.getText() + "\n" + message);
+      chatTxt.setText(chatTxt.getText() + "\n" + "(" + date + ") " + message.getUsername() + ": " + message.getBody());
     }
 
     chatTxt.setScrollTop(Double.MAX_VALUE);
