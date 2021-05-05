@@ -15,9 +15,9 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
 import tech.aspm.converse.services.ChannelService;
-import tech.aspm.converse.services.RabbitMQService;
 import tech.aspm.converse.services.UserService;
 
 @Component
@@ -27,7 +27,7 @@ public class ChatController {
   private UserService userService;
   @Autowired
   private ChannelService channelService;
-  private Stage stage;
+  private final FxWeaver fxWeaver;
 
   @FXML
   VBox chatBox;
@@ -58,11 +58,6 @@ public class ChatController {
 
   @FXML
   public void initialize() {
-    this.stage = new Stage();
-    stage.setScene(new Scene(chatBox));
-  }
-
-  public void show() {
     userLbl.setText(userService.getUsername());
     channelLbl.setText(channelService.getName());
 
@@ -71,21 +66,29 @@ public class ChatController {
     unlockLbl.setVisible(!secure);
     lockImg.setVisible(secure);
     lockLbl.setVisible(secure);
+  }
 
-    stage.show();
+  public ChatController(FxWeaver fxWeaver) {
+    this.fxWeaver = fxWeaver;
   }
 
   public void handleLeave(ActionEvent event) {
-    stage.close();
+    Stage stage = (Stage) chatBox.getScene().getWindow();
+    Scene scene = new Scene(fxWeaver.loadView(LoginController.class));
+    stage.setScene(scene);
+    channelService.cleanup();
+    userService.cleanup();
   }
 
   public void handleSend(ActionEvent event) {
-    channelService.sendMessage("Fuck yeah this is working with button!");
+    channelService.sendMessage(messageTxt.getText());
+    messageTxt.setText("");
   }
 
   public void handleEnter(KeyEvent event) {
     if (event.getCode().equals(KeyCode.ENTER)) {
-      channelService.sendMessage("Fuck yeah this is working with enter!");
+      channelService.sendMessage(messageTxt.getText());
+      messageTxt.setText("");
     }
   }
 

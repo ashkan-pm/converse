@@ -1,7 +1,5 @@
 package tech.aspm.converse;
 
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -39,10 +37,5 @@ public class RabbitMQConfig {
   @Bean
   MessageListenerAdapter listenerAdapter(ChannelService channelService) {
     return new MessageListenerAdapter(channelService, "receiveMessage");
-  }
-
-  @Bean
-  Binding binding(Queue queue, TopicExchange exchange) {
-    return BindingBuilder.bind(queue).to(exchange).with("channel.#");
   }
 }

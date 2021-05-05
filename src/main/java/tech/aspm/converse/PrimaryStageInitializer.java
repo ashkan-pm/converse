@@ -24,5 +24,5 @@ public class PrimaryStageInitializer implements ApplicationListener<StageReadyEv
     Scene scene = new Scene(fxWeaver.loadView(LoginController.class));
     stage.setScene(scene);
     stage.show();
-  }
+  }  
 }

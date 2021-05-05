@@ -1,13 +1,10 @@
 package tech.aspm.converse.services;
 
-import java.util.Properties;
-
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
-import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,13 +16,13 @@ public class ChannelService {
   @Autowired
   private ChatController chatController;
   @Autowired
+  private UserService userService;
+  @Autowired
   RabbitMQService rabbitMQService;
   @Autowired
   private AmqpAdmin rabbitMQAdmin;
   @Autowired
   private TopicExchange exchange;
-  @Autowired
-  SimpleMessageListenerContainer container;
   private String name;
   private boolean secure;
 
@@ -56,13 +53,21 @@ public class ChannelService {
     rabbitMQService.send(name, message);
   }
 
-  public void createBinding(Queue queue) {
+  public void createBinding() {
     if (name.equals("")) {
       throw new Error("Can not create a binding without a channel name");
+    } else if (userService.getQueue() == null) {
+      throw new Error("Can not create a binding without queue");
     }
 
+    Queue queue = userService.getQueue();
     Binding binding = BindingBuilder.bind(queue).to(exchange).with(name);
     rabbitMQAdmin.declareBinding(binding);
-    container.addQueues(queue);
+  }
+
+  public void cleanup() {
+    Queue queue = userService.getQueue();
+    Binding binding = BindingBuilder.bind(queue).to(exchange).with(name);
+    rabbitMQAdmin.removeBinding(binding);
   }
 }
