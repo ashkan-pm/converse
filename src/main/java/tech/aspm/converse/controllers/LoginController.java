@@ -37,6 +37,12 @@ public class LoginController {
   @FXML
   Button loginBtn;
 
+  @FXML
+  public void initialize() {
+    usernameTxt.setText(userService.getUsername());
+    channelTxt.setText(channelService.getName());
+  }
+
   public LoginController(FxWeaver fxWeaver) {
     this.fxWeaver = fxWeaver;
   }
