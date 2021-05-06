@@ -9,6 +9,7 @@ import org.springframework.amqp.rabbit.listener.RabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.listener.RabbitListenerEndpointRegistrar;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
@@ -16,12 +17,13 @@ import org.springframework.messaging.handler.annotation.support.DefaultMessageHa
 import org.springframework.messaging.handler.annotation.support.MessageHandlerMethodFactory;
 
 @Configuration
-public class RabbitMQConfig implements RabbitListenerConfigurer {
-  public static final String EXCHANGE_NAME = "converse-channel";
+public class RabbitConfig implements RabbitListenerConfigurer {
+  @Value("${converse.rabbitmq.exchangeName}")
+  String exchangeName;
 
   @Bean
   TopicExchange exchange() {
-    return new TopicExchange(EXCHANGE_NAME);
+    return new TopicExchange(exchangeName);
   }
 
   @Bean
@@ -36,11 +38,6 @@ public class RabbitMQConfig implements RabbitListenerConfigurer {
     return factory;
   }
 
-  @Bean
-  public MessageConverter jsonConverter() {
-    return new Jackson2JsonMessageConverter();
-  }
-
   @Override
   public void configureRabbitListeners(RabbitListenerEndpointRegistrar registrar) {
     registrar.setMessageHandlerMethodFactory(messageHandlerMethodFactory());
@@ -51,6 +48,11 @@ public class RabbitMQConfig implements RabbitListenerConfigurer {
     DefaultMessageHandlerMethodFactory messageHandlerMethodFactory = new DefaultMessageHandlerMethodFactory();
     messageHandlerMethodFactory.setMessageConverter(consumerJackson2MessageConverter());
     return messageHandlerMethodFactory;
+  }
+
+  @Bean
+  public MessageConverter jsonConverter() {
+    return new Jackson2JsonMessageConverter();
   }
 
   @Bean

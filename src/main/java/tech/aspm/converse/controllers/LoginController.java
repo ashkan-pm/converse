@@ -65,10 +65,11 @@ public class LoginController {
 
   public void handleLogin(ActionEvent event) {
     userService.setUsername(usernameTxt.getText());
-    userService.createQueue();
+    userService.login();
+
     channelService.setName(channelTxt.getText());
-    channelService.setSecure(encChk.isSelected());
-    channelService.createBinding();
+    channelService.setIsEncrypted(encChk.isSelected());
+    channelService.join();
 
     Stage stage = (Stage) loginBox.getScene().getWindow();
     Scene scene = new Scene(fxWeaver.loadView(ChatController.class));

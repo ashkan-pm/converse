@@ -1,29 +1,25 @@
 package tech.aspm.converse;
 
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.context.ConfigurableApplicationContext;
+import javax.annotation.PreDestroy;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.stage.Stage;
+import tech.aspm.converse.fx.FXWeaverConverseApplication;
+import tech.aspm.converse.helpers.MessageQueueHelper;
 
-public class ConverseApplication extends Application {
-	private ConfigurableApplicationContext context;
+@SpringBootApplication
+public class ConverseApplication {
+  @Autowired
+  private MessageQueueHelper messageQueueHelper;
 
-	@Override
-	public void init() throws Exception {
-		this.context = new SpringApplicationBuilder().sources(FxWeaverConverseApplication.class)
-				.run(getParameters().getRaw().toArray(new String[0]));
-	}
+  public static void main(String[] args) {
+    Application.launch(FXWeaverConverseApplication.class, args);
+  }
 
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-		context.publishEvent(new StageReadyEvent(primaryStage));
-	}
-
-	@Override
-	public void stop() throws Exception {
-		context.close();
-		Platform.exit();
-	}
+  @PreDestroy
+  private void cleanup() {
+    messageQueueHelper.removeSession();
+  }
 }

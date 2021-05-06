@@ -1,22 +1,18 @@
 package tech.aspm.converse.services;
 
-import java.util.Properties;
-
-import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.rabbit.listener.AbstractMessageListenerContainer;
-import org.springframework.amqp.rabbit.listener.RabbitListenerEndpointRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import tech.aspm.converse.helpers.MessageQueueHelper;
+
 @Service
 public class UserService {
-  @Autowired
-  private AmqpAdmin rabbitMQAdmin;
-  @Autowired
-  private RabbitListenerEndpointRegistry listenerEndpointRegistry;
   private String username;
   private Queue queue;
+
+  @Autowired
+  private MessageQueueHelper queueHelper;
 
   public String getUsername() {
     return username;
@@ -33,23 +29,8 @@ public class UserService {
   public UserService() {
   }
 
-  public void createQueue() {
-    if (username.equals("")) {
-      throw new Error("Can not create a queue without a username");
-    }
-
-    Properties props = rabbitMQAdmin.getQueueProperties(username);
-    Queue queue = new Queue(username);
-    if (props == null) {
-      rabbitMQAdmin.declareQueue(queue);
-    }
-
-    this.queue = queue;
-    ((AbstractMessageListenerContainer) this.listenerEndpointRegistry.getListenerContainer("message")).addQueues(queue);
-  }
-
-  public void cleanup() {
-    ((AbstractMessageListenerContainer) this.listenerEndpointRegistry.getListenerContainer("message")).removeQueues(queue);
-    rabbitMQAdmin.deleteQueue(username);
+  public Queue login() {
+    queue = queueHelper.declareQueue(username);
+    return queue;
   }
 }

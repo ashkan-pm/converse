@@ -1,4 +1,4 @@
-package tech.aspm.converse;
+package tech.aspm.converse.fx;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;

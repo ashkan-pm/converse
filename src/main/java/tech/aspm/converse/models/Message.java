@@ -5,8 +5,10 @@ import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+import tech.aspm.converse.interfaces.QueueMessage;
+
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id", scope = Message.class)
-public class Message {
+public class Message implements QueueMessage {
   private String username;
   private String body;
   private String channel;

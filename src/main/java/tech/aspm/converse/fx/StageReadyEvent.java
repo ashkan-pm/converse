@@ -1,4 +1,4 @@
-package tech.aspm.converse;
+package tech.aspm.converse.fx;
 
 import org.springframework.context.ApplicationEvent;
 

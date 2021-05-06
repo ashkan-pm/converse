@@ -20,6 +20,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
+import tech.aspm.converse.helpers.MessageQueueHelper;
 import tech.aspm.converse.models.Message;
 import tech.aspm.converse.services.ChannelService;
 import tech.aspm.converse.services.UserService;
@@ -27,6 +28,8 @@ import tech.aspm.converse.services.UserService;
 @Component
 @FxmlView("/views/chat.fxml")
 public class ChatController {
+  @Autowired
+  private MessageQueueHelper messageQueueHelper;
   @Autowired
   private UserService userService;
   @Autowired
@@ -65,7 +68,7 @@ public class ChatController {
     userLbl.setText(userService.getUsername());
     channelLbl.setText(channelService.getName());
 
-    boolean secure = channelService.getSecure();
+    boolean secure = channelService.getIsEncrypted();
     unlockImg.setVisible(!secure);
     unlockLbl.setVisible(!secure);
     lockImg.setVisible(secure);
@@ -80,32 +83,29 @@ public class ChatController {
     Stage stage = (Stage) chatBox.getScene().getWindow();
     Scene scene = new Scene(fxWeaver.loadView(LoginController.class));
     stage.setScene(scene);
-    channelService.cleanup();
-    userService.cleanup();
+    messageQueueHelper.removeSession();
   }
 
   public void handleSend(ActionEvent event) {
+    sendMessage();
+  }
+
+  public void handleEnter(KeyEvent event) {
+    if (event.getCode().equals(KeyCode.ENTER)) {
+      sendMessage();
+    }
+  }
+
+  private void sendMessage() {
     Message message = new Message();
     message.setUsername(userService.getUsername());
     message.setBody(messageTxt.getText());
     message.setChannel(channelService.getName());
     message.setCreatedAt(new Date());
-    message.setIsEncrypted(channelService.getSecure());
-    channelService.sendMessage(message);
-    messageTxt.setText("");
-  }
+    message.setIsEncrypted(channelService.getIsEncrypted());
 
-  public void handleEnter(KeyEvent event) {
-    if (event.getCode().equals(KeyCode.ENTER)) {
-      Message message = new Message();
-      message.setUsername(userService.getUsername());
-      message.setBody(messageTxt.getText());
-      message.setChannel(channelService.getName());
-      message.setCreatedAt(new Date());
-      message.setIsEncrypted(channelService.getSecure());
-      channelService.sendMessage(message);
-      messageTxt.setText("");
-    }
+    messageQueueHelper.sendMessage(message);
+    messageTxt.setText("");
   }
 
   public void pushMessage(Message message) {
