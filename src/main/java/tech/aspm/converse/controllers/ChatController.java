@@ -20,6 +20,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
+import tech.aspm.converse.helpers.ClientQueueHelper;
+import tech.aspm.converse.helpers.IssuerQueueHelper;
 import tech.aspm.converse.helpers.MessageQueueHelper;
 import tech.aspm.converse.models.Message;
 import tech.aspm.converse.services.ChannelService;
@@ -30,6 +32,10 @@ import tech.aspm.converse.services.UserService;
 public class ChatController {
   @Autowired
   private MessageQueueHelper messageQueueHelper;
+  @Autowired
+  private ClientQueueHelper clientQueueHelper;
+  @Autowired
+  private IssuerQueueHelper issuerQueueHelper;
   @Autowired
   private UserService userService;
   @Autowired
@@ -84,6 +90,8 @@ public class ChatController {
     Scene scene = new Scene(fxWeaver.loadView(LoginController.class));
     stage.setScene(scene);
     messageQueueHelper.removeSession();
+    clientQueueHelper.removeSession();
+    issuerQueueHelper.removeSession();
   }
 
   public void handleSend(ActionEvent event) {

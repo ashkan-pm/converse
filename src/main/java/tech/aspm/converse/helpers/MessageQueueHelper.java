@@ -15,12 +15,13 @@ import org.springframework.stereotype.Component;
 
 import tech.aspm.converse.models.Message;
 import tech.aspm.converse.services.ChannelService;
+import tech.aspm.converse.services.MessageService;
 import tech.aspm.converse.services.RabbitService;
 import tech.aspm.converse.services.UserService;
 
 @Component
 public class MessageQueueHelper {
-  @Value("${converse.rabbitmq.messageListenerId}")
+  @Value("${converse.rabbitmq.message.listenerId}")
   private String messageListenerId;
 
   @Autowired
@@ -35,9 +36,16 @@ public class MessageQueueHelper {
   private UserService userService;
   @Autowired
   private ChannelService channelService;
+  @Autowired
+  private MessageService messageService;
 
   public void sendMessage(Message message) {
+    if (message.getIsEncrypted()) {
+      message.setBody(CryptoHelper.encrypt(message.getBody(), channelService.getSecret()));
+    }
+
     rabbitMQService.send(channelService.getName(), message);
+    messageService.saveMessage(message);
   }
 
   public Queue declareQueue(String name) {

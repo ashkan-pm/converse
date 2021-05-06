@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import tech.aspm.converse.models.Message;
+import tech.aspm.converse.interfaces.QueueMessage;
 
 @Service
 public class RabbitService {
@@ -17,10 +17,8 @@ public class RabbitService {
 
   @Autowired
   private RabbitTemplate rabbitTemplate;
-  @Autowired
-  private MessageService messageService;
 
-  public void send(String routingKey, Message message) {
+  public void send(String routingKey, QueueMessage message) {
     try {
       ObjectMapper objectMapper = new ObjectMapper();
       String orderJson = objectMapper.writeValueAsString(message);
@@ -30,7 +28,5 @@ public class RabbitService {
     } catch (JsonProcessingException e) {
       e.printStackTrace();
     }
-
-    messageService.saveMessage(message);
   }
 }
