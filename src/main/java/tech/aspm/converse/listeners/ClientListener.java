@@ -5,7 +5,6 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import tech.aspm.converse.controllers.ChatController;
 import tech.aspm.converse.models.PublicKey;
 import tech.aspm.converse.models.Secret;
 import tech.aspm.converse.services.ChannelService;
