@@ -9,9 +9,9 @@
 	</parent>
 	<groupId>tech.aspm</groupId>
 	<artifactId>converse</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>converse</name>
-	<description>Converse is an end-to-end encrypted simple chatroom with Java and RabbitMQ</description>
+	<description>End-to-end encrypted simple chatroom built with Java, Spring Boot and RabbitMQ</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>

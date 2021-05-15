@@ -1,2 +1,2 @@
 # converse
-Converse is an end-to-end encrypted simple chatroom with Java and RabbitMQ
+End-to-end encrypted simple chatroom built with Java, Spring Boot and RabbitMQ
